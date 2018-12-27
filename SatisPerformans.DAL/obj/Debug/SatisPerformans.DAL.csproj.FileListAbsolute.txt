@@ -1,0 +1,6 @@
+C:\Users\okaragoz\source\repos\SatisPerformansSolution\SatisPerformans.DAL\bin\Debug\SatisPerformans.DAL.dll
+C:\Users\okaragoz\source\repos\SatisPerformansSolution\SatisPerformans.DAL\bin\Debug\SatisPerformans.DAL.pdb
+C:\Users\okaragoz\source\repos\SatisPerformansSolution\SatisPerformans.DAL\obj\Debug\SatisPerformans.DAL.csprojResolveAssemblyReference.cache
+C:\Users\okaragoz\source\repos\SatisPerformansSolution\SatisPerformans.DAL\obj\Debug\SatisPerformans.DAL.csproj.CoreCompileInputs.cache
+C:\Users\okaragoz\source\repos\SatisPerformansSolution\SatisPerformans.DAL\obj\Debug\SatisPerformans.DAL.dll
+C:\Users\okaragoz\source\repos\SatisPerformansSolution\SatisPerformans.DAL\obj\Debug\SatisPerformans.DAL.pdb

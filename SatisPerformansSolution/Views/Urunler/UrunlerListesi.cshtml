@@ -1,0 +1,88 @@
+﻿@using SatisPeformans.Entities.Surrogates;
+
+@{
+    ViewBag.Title = "Urunler";
+}
+<script>
+    var urunIslemleri_JS =
+        {
+            islemTipiEkle: function ()
+            {
+                if (kendoGridSecilileriAl("GridUrunlerListesi") != null) {
+                    var UrunID = kendoGridSecilileriAl("GridUrunlerListesi").UrunID;
+                }
+                debugger;
+               
+                var islemTipi = $("#islemTipiTxt").val();
+              
+
+                var ParametreDizi = { UrunAdi: islemTipi, UrunID: UrunID };
+                $.ajax({
+                    url: '/Urunler/PostIslemTipleri',
+                    data: JSON.stringify(ParametreDizi),
+                    contentType: 'application/json; charset=utf-8',
+                    type: "POST",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success == true) {
+                            debugger;
+                            //$('.k-window-action').find('.k-i-close')[0].click();
+                            //$("#GridSatislarListesi").data("kendoGrid").dataSource.read();
+                            urunIslemleri_JS.Temizle();
+
+                        }
+                        else {
+                            debugger;
+
+                            alert("Satış Tarihi Hedef Ayı içinde olmalıdır");
+
+                        }
+                    }
+                });
+            },
+            Temizle: function ()
+            {
+                $("#islemTipiTxt").val("");
+                $("#GridUrunlerListesi").data("kendoGrid").dataSource.read();
+                $("#btnIslemTipiEkle")[0].innerHTML = "İşlem Tipi Ekle"
+            },
+            GridUrunlerListesiChange: function ()
+            {
+                debugger;
+
+                var islemAdi = kendoGridSecilileriAl("GridUrunlerListesi").UrunAdi
+                $("#islemTipiTxt").val(islemAdi);
+                $("#btnIslemTipiEkle")[0].innerHTML = "İşlem Tipi Güncelle"
+
+            }
+        }
+</script>
+<div style="padding:18px; margin-bottom:-25px;" id="divUrunlerBtn">
+    <label>İşlem Tipi:</label>
+    @Html.Kendo().TextBox().Name("islemTipiTxt")
+    <button type="button" id="btnIslemTipiEkle" onclick="urunIslemleri_JS.islemTipiEkle()" class="btn btn-success"> İşlem Tipi Ekle</button>
+    <button type="button" id="temizle" onclick="urunIslemleri_JS.Temizle()" class="btn btn-success"> Temizle</button>
+</div>
+<div style="padding:18px;" id="divHedefAylarListesi">
+
+    @(Html.Kendo().Grid<UrunlerSurrogate>().Name("GridUrunlerListesi")
+    .Columns(col =>
+    {
+        col.Bound(f => f.UrunID).Visible(false);
+        col.Bound(f => f.UrunAdi).Title("İşlem Tipleri").Filterable(f => f.Cell(c => c.Operator("contains")));
+        
+    })
+
+    .Scrollable()
+     .Filterable(f => f.Mode(GridFilterMode.Row)).ColumnMenu()
+    .Pageable()
+    .Sortable()
+    .Events(e=>e.Change("urunIslemleri_JS.GridUrunlerListesiChange"))
+    .Selectable()
+     .DataSource(dataSource => dataSource.Ajax().PageSize(50).Model(model => { model.Id(p => p.UrunID); })
+        .Read(read => read.Action("ReadUrunler", "Urunler").Type(HttpVerbs.Post))
+
+     )
+    )
+</div>
+

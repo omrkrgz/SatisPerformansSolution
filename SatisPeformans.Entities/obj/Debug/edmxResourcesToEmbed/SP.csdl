@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SatisPerformansDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Personeller">
+    <Key>
+      <PropertyRef Name="PersonelID" />
+    </Key>
+    <Property Name="PersonelID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Adi" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+    <Property Name="Soyadi" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+    <Property Name="MagazaID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityContainer Name="SatisPerformansDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Personeller" EntityType="Self.Personeller" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(SatisPerformansDBModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(SatisPerformansDBModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="HedefAylari" EntityType="SatisPerformansDBModel.HedefAylari" />
+    <EntitySet Name="SatisDurumlari" EntityType="SatisPerformansDBModel.SatisDurumlari" />
+    <EntitySet Name="Magazalar" EntityType="SatisPerformansDBModel.Magazalar" />
+    <EntitySet Name="Urunler" EntityType="SatisPerformansDBModel.Urunler" />
+    <EntitySet Name="Satislar" EntityType="SatisPerformansDBModel.Satislar" />
+    <EntitySet Name="IslemKanallari" EntityType="SatisPerformansDBModel.IslemKanallari" />
+    <FunctionImport Name="proc_SatisRaporu" ReturnType="Collection(SatisPerformansDBModel.proc_SatisRaporu_Result)">
+      <Parameter Name="HedefAyID" Mode="In" Type="Int32" />
+      <Parameter Name="MagazaID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="SatisDetaylari" EntityType="SatisPerformansDBModel.SatisDetaylari" />
+    <EntitySet Name="Hedefler" EntityType="SatisPerformansDBModel.Hedefler" />
+    <FunctionImport Name="proc_SatislarListesi" ReturnType="Collection(SatisPerformansDBModel.proc_SatislarListesi_Result)">
+      <Parameter Name="MagazaID" Mode="In" Type="Int32" />
+      <Parameter Name="HedefAyID" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="HedefAylari">
+    <Key>
+      <PropertyRef Name="HedefAyID" />
+    </Key>
+    <Property Name="HedefAyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HedefAyi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HedefTarihiBaslangic" Type="DateTime" Precision="0" />
+    <Property Name="HedefTarihiBitis" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="SatisDurumlari">
+    <Key>
+      <PropertyRef Name="SatisDurumID" />
+    </Key>
+    <Property Name="SatisDurumID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SatisDurumu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Magazalar">
+    <Key>
+      <PropertyRef Name="MagazaID" />
+    </Key>
+    <Property Name="MagazaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MagazaAdi" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Urunler">
+    <Key>
+      <PropertyRef Name="UrunID" />
+    </Key>
+    <Property Name="UrunID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UrunAdi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Satislar">
+    <Key>
+      <PropertyRef Name="SatisID" />
+    </Key>
+    <Property Name="SatisID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SatisTarihi" Type="DateTime" Precision="0" />
+  </EntityType>
+  <EntityType Name="IslemKanallari">
+    <Key>
+      <PropertyRef Name="IslemKanaliID" />
+    </Key>
+    <Property Name="IslemKanaliID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IslemKanali" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <ComplexType Name="proc_SatisRaporu_Result">
+    <Property Type="Int32" Name="PersonelID" Nullable="true" />
+    <Property Type="Int32" Name="HedefAdet" Nullable="true" />
+    <Property Type="String" Name="UrunAdi" Nullable="true" />
+    <Property Type="String" Name="Adi" Nullable="true" MaxLength="80" />
+    <Property Type="String" Name="Soyadi" Nullable="true" MaxLength="80" />
+    <Property Type="Int32" Name="ToplamSatis" Nullable="true" />
+    <Property Type="Int32" Name="KalanHedef" Nullable="true" />
+    <Property Type="String" Name="HedefAyi" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <EntityType Name="SatisDetaylari">
+    <Key>
+      <PropertyRef Name="SatisDetayID" />
+    </Key>
+    <Property Name="SatisDetayID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SatisID" Type="Int32" />
+    <Property Name="PersonelID" Type="Int32" />
+    <Property Name="UrunID" Type="Int32" />
+    <Property Name="SatisAdeti" Type="Int32" />
+    <Property Name="SatisDurumID" Type="Int32" />
+    <Property Name="MagazaID" Type="Int32" />
+    <Property Name="HedefAyID" Type="Int32" />
+    <Property Name="IslemKanaliID" Type="Int32" />
+    <Property Name="MusteriAdiSoyadi" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="MusteriNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MusteriTcNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="IslemNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tarife" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Kimlik" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Bundle" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Aciklama" Type="String" MaxLength="800" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Hedefler">
+    <Key>
+      <PropertyRef Name="HedefID" />
+    </Key>
+    <Property Name="HedefID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HedefAdet" Type="Int32" />
+    <Property Name="PersonelID" Type="Int32" />
+    <Property Name="UrunID" Type="Int32" />
+    <Property Name="HedefAyID" Type="Int32" />
+    <Property Name="MagazaID" Type="Int32" />
+  </EntityType>
+  <ComplexType Name="proc_SatislarListesi_Result">
+    <Property Type="Int32" Name="SatisID" Nullable="false" />
+    <Property Type="Int32" Name="SatisDetayID" Nullable="false" />
+    <Property Type="String" Name="Adi" Nullable="true" MaxLength="80" />
+    <Property Type="Int32" Name="PersonelID" Nullable="false" />
+    <Property Type="String" Name="UrunAdi" Nullable="true" />
+    <Property Type="Int32" Name="UrunID" Nullable="false" />
+    <Property Type="DateTime" Name="SatisTarihi" Nullable="true" />
+    <Property Type="String" Name="SatisDurumu" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="SatisDurumID" Nullable="false" />
+    <Property Type="String" Name="IslemKanali" Nullable="true" MaxLength="150" />
+    <Property Type="Int32" Name="IslemKanaliID" Nullable="true" />
+    <Property Type="String" Name="MusteriAdiSoyadi" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="MusteriNo" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="MusteriTcNo" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="IslemNo" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Kimlik" Nullable="true" MaxLength="250" />
+    <Property Type="String" Name="Tarife" Nullable="true" MaxLength="250" />
+    <Property Type="String" Name="Bundle" Nullable="true" MaxLength="250" />
+    <Property Type="String" Name="Aciklama" Nullable="true" MaxLength="800" />
+  </ComplexType>
+</Schema>

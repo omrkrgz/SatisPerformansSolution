@@ -1,0 +1,71 @@
+﻿@using SatisPeformans.Entities.Surrogates;
+
+
+<script>
+    var personelIslemleri_js =
+        {
+            PersonelEkle: function (e)
+            {
+                debugger;
+                //$("#Deneme").data("kendoGrid").select($(e.target).closest("tr"));
+                //var Id = kendoGridSecilileriAl("Deneme").Adi;
+                //alert(Id);
+                $("#PersonelEklePopup").data("kendoWindow").center().open();
+            },
+            PersonelGuncelle: function (e)
+            {
+                debugger;
+                $("#GridPersonelListesi").data("kendoGrid").select($(e.target).closest("tr"));
+                var Id = kendoGridSecilileriAl("GridPersonelListesi").Adi;
+                alert(Id);
+            },
+            DataBound: function ()
+            {
+               
+            },
+            ReadParams: function ()
+            {
+                return ({ MagazaID: $("#GenelDrpMagazalar").data("kendoDropDownList").value()})
+            }
+        }
+</script>
+
+<div style="padding:18px; margin-bottom:-25px;" id="divPersonelEkleBtn">
+    <button type="button" onclick="personelIslemleri_js.PersonelEkle()" class="btn btn-success">Personel Ekle</button>
+</div>
+<div style="padding:18px;" id="divPersonelListesi">
+    
+    @(Html.Kendo().Grid<PersonellerSurrogate>().Name("GridPersonelListesi")
+    .Columns(col =>
+    {
+        col.Bound(f => f.PersonelID).Visible(false);
+        col.Bound(f => f.Adi).Filterable(f => f.Cell(c => c.Operator("contains")));
+        col.Bound(f => f.Soyadi);
+       
+    })
+
+    .Scrollable()
+     .Filterable(f => f.Mode(GridFilterMode.Row)).ColumnMenu()
+    .Pageable()
+    .Sortable()
+    .Events(e=>e.DataBound("personelIslemleri_js.DataBound"))
+    .Selectable()
+     .DataSource(dataSource => dataSource.Ajax().PageSize(50).Model(model => { model.Id(p => p.PersonelID); })
+        .Read(read => read.Action("ReadPersoneller", "Personeller").Type(HttpVerbs.Post).Data("personelIslemleri_js.ReadParams"))
+
+     )
+)
+</div>
+@(Html.Kendo().Window()
+        .Name("PersonelEklePopup")
+        .Width(800)
+        .Height(400)
+        .Draggable()
+        .Resizable()
+        .Visible(false)
+        .Title("Personel Ekle")
+        .Actions(actions => actions.Pin().Refresh().Maximize().Close())
+        .LoadContentFrom("PersonelEklePopup", "Personeller")
+)
+
+

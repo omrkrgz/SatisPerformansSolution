@@ -1,0 +1,119 @@
+﻿@using SatisPeformans.Entities;
+
+@{
+    ViewBag.Title = "SatisRaporu";
+}
+
+<style>
+    #GridSatisRaporu > div.k-grid-content {
+        height: 481px !important;
+    }
+    /*#GridSatisRaporu
+    {
+        margin-top:-14px;
+    }*/
+</style>
+<script>
+    //$(function () {
+    //    setTimeout(function () {
+           
+    //    }, 150)
+    //})
+   
+    var satisRaporuIslemleri_JS =
+        {
+            readParams: function ()
+            {
+                
+                return { HedefAyID: $("#GenelDrpHedefAylar").val(), MagazaID: $("#GenelDrpMagazalar").val()}
+            },
+            DrpChange: function ()
+            {
+                $("#GridSatisRaporu").data("kendoGrid").dataSource.read();
+            },
+            DataBound: function ()
+            {
+                debugger;
+               
+                
+            },
+            drpDataBound: function ()
+            {
+                if ($("#HedefAylarDrp").val() == "")
+                {
+                    //$("#HedefAylarDrp").data("kendoDropDownList").value("1");
+                    //$("#GridSatisRaporu").data("kendoGrid").dataSource.read();
+                }
+            },
+            raporuYenile: function ()
+            {
+                $("#GridSatisRaporu").data("kendoGrid").dataSource.read();
+            }
+        }
+</script>
+
+@*<div style="padding:18px;">
+    @(Html.Kendo().DropDownList()
+                                .Name("HedefAylarDrp")
+                                .OptionLabel("Ay Seçiniz")
+                                .DataTextField("HedefAyi")
+                                .DataValueField("HedefAyID")
+                                .HtmlAttributes(new { style = "width: 200px" })
+                                .Filter("contains")
+                                .Events(e=>e.DataBound("satisRaporuIslemleri_JS.drpDataBound"))
+                                .Events(e=>e.Change("satisRaporuIslemleri_JS.DrpChange"))
+                                .DataSource(dataSource =>
+                                {
+                                    dataSource.Read(read => read.Action("ReadHedefAylar", "Genel"));
+                                }))
+</div>*@
+<div style="padding:18px; margin-bottom:-25px;" id="divPersonelEkleBtn">
+    <button type="button" onclick="satisRaporuIslemleri_JS.raporuYenile()" class="btn btn-success">Raporu Yenile</button>
+</div>
+<div style="padding:18px;" id="divSatisRaporu">
+
+    @(Html.Kendo().Grid<proc_SatisRaporu_Result>().Name("GridSatisRaporu")
+    .Columns(col =>
+    {
+        col.Bound(f => f.Adi);
+        col.Bound(f => f.UrunAdi).Filterable(f => f.Cell(c => c.Operator("contains")));
+        col.Bound(f => f.HedefAdet);
+        col.Bound(f => f.ToplamSatis);
+        col.Bound(f => f.KalanHedef);
+        col.Bound(f => f.HedefAyi).Format("{0:dd.MM.yyyy}");
+    })
+
+    .Scrollable()
+     .Filterable(f => f.Mode(GridFilterMode.Row)).ColumnMenu()
+    .Pageable()
+    .AutoBind(false)
+    .Sortable()
+   .Events(e=>e.DataBound("satisRaporuIslemleri_JS.DataBound"))
+    .Selectable()
+     .DataSource(dataSource => dataSource.Ajax().PageSize(50)
+        .Read(read => read.Action("ReadSatisRaporlari", "SatisRaporlari").Data("satisRaporuIslemleri_JS.readParams").Type(HttpVerbs.Post))
+
+     )
+    )
+</div>
+
+@*<div class="container text-center">
+    <h3>BootStrap Örnekleri</h3>
+    <br>
+    <div class="row">
+        
+        <div class="col-sm-6">
+            <div class="well">
+                <p>Kutu6</p>
+            </div>
+           
+        </div>
+        <div class="col-sm-6">
+            <div class="well">
+                <p>Kutu8</p>
+            </div>
+           
+        </div>
+    </div>
+</div>*@
+

@@ -1,0 +1,396 @@
+﻿@using SatisPeformans.Entities;
+
+
+@{
+    ViewBag.Title = "SatislarListesi";
+}
+<style>
+    #GridSatislarListesi > div.k-grid-content {
+        /*height: 415px !important;*/
+    }
+
+    @@media screen and (min-width:800px) {
+        .butonlar {
+            float: right;
+            margin-right: 46px;
+        }
+    }
+</style>
+<script>
+    $(function () {
+        setTimeout(function () {
+            $("#PersonellerDrp").data("kendoDropDownList").dataSource.read();
+            $("#UrunlerDrp").data("kendoDropDownList").dataSource.read();
+            if ($("#GridSatislarListesi").data("kendoGrid")._data.length == 0) {
+                $("#GridSatislarListesi").data("kendoGrid").dataSource.read();
+            }
+        }, 350);
+    })
+    var satisIslemleri_js =
+        {
+            SatisEkle: function (e) {
+                if (kendoGridSecilileriAl("GridSatislarListesi") != null) {
+                    var SatisID = kendoGridSecilileriAl("GridSatislarListesi").SatisID;
+                }
+                debugger;
+                var satisTarihi = $("#SatisTarihiDatePic").val();
+                var islemKanallari = $("#IslemKanllariDrp").val();
+                var urunID = $("#UrunlerDrp").val();
+                var musteriAdiSoyadi = $("#musteriAdiSoyadiText").val();
+                var musteriNo = $("#musteriNoText").val();
+                var musteriTcNo = $("#musteriTcNoText").val();
+                var islemNo = $("#islemNoText").val();
+                var bundle = $("#bundleText").val();
+                var aciklama = $("#aciklamaText").val();
+                var tarife = $("#tarifeText").val();
+                var kimlik = $("#kimlikText").val();
+                var magazaID = $("#GenelDrpMagazalar").val();
+                var hedefAyID = $("#GenelDrpHedefAylar").val();
+                var personelID = $("#PersonellerDrp").val();
+                /*var satisAdeti = $("#SatisAdetiNmbr").val();*/
+                var satisDurumID = $("#SatisDurumlariDrp").val();
+
+                var ParametreDizi = { SatisID: SatisID, Kimlik: kimlik, Bundle: bundle, Aciklama: aciklama, Tarife: tarife, IslemNo: islemNo, MusteriAdiSoyadi: musteriAdiSoyadi, MusteriTcNo: musteriTcNo, MusteriNo: musteriNo, IslemKanaliID: islemKanallari, SatisDurumID: satisDurumID, UrunID: urunID, PersonelID: personelID, SatisTarihi: satisTarihi, MagazaID: magazaID, HedefAyID: hedefAyID };
+                $.ajax({
+                    url: '/Satislar/PostSatislar',
+                    data: JSON.stringify(ParametreDizi),
+                    contentType: 'application/json; charset=utf-8',
+                    type: "POST",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success == true) {
+                            debugger;
+                            //$('.k-window-action').find('.k-i-close')[0].click();
+                            //$("#GridSatislarListesi").data("kendoGrid").dataSource.read();
+                            satisIslemleri_js.Temizle();
+
+                        }
+                        else {
+                            debugger;
+
+                            alert("Satış Tarihi Hedef Ayı içinde olmalıdır");
+
+                        }
+                    }
+                });
+            },
+            onFilter: function () {
+
+                var toplamSatisSayisi = 0;
+                $("#araToplam").empty();
+                //for (var i = 0; i < $("#GridSatislarListesi").data("kendoGrid")._data.length; i++)
+                //{
+                //    toplamSatisSayisi+=$("#GridSatislarListesi").data("kendoGrid")._data[i].SatisID;
+                //}
+                toplamSatisSayisi = $("#GridSatislarListesi").data("kendoGrid")._data.length;
+                $("#araToplam").append(toplamSatisSayisi);
+                ResizeGrid("#GridSatislarListesi > div.k-grid-content", $("#divSatisEkleBtn").height());
+                debugger;
+                //var grid = $("#GridSatislarListesi").data("kendoGrid");
+                //var gridData = grid.dataSource.view();
+                //for (var i = 0; i < gridData.length; i++) {
+                //    var currentUid = gridData[i].uid;
+                //    if (gridData[i].SatisDurumID == 1)
+                //    {
+                //        var currentRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                //        //var createUserButton = $(currentRow).find("butCreateUser");
+                //        //createUserButton.hide();
+                //        currentRow.css('background-color', '#00ff00');
+                //    }
+                //    if (gridData[i].SatisDurumID == 2) {
+                //        var currentRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                //        //var createUserButton = $(currentRow).find("butCreateUser");
+                //        //createUserButton.hide();
+                //        currentRow.css('background-color', '#ff3030');
+                //    }
+                //    if (gridData[i].SatisDurumID == 3) {
+                //        var currentRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+                //        //var createUserButton = $(currentRow).find("butCreateUser");
+                //        //createUserButton.hide();
+                //        currentRow.css('background-color', 'Yellow');
+                //    }
+                //}
+            },
+            satisListesiChange: function () {
+                debugger;
+                $("#btnSatisEkle")[0].innerHTML = "Satış Güncelle"
+                var SatisID = kendoGridSecilileriAl("GridSatislarListesi").SatisID;
+                var PersonelID = kendoGridSecilileriAl("GridSatislarListesi").PersonelID;
+                var UrunID = kendoGridSecilileriAl("GridSatislarListesi").UrunID;
+                var IslemKanaliID = kendoGridSecilileriAl("GridSatislarListesi").IslemKanaliID;
+                //var SatisAdeti = kendoGridSecilileriAl("GridSatislarListesi").SatisAdeti;
+                var SatisTarihi = kendoGridSecilileriAl("GridSatislarListesi").SatisTarihi;
+                var SatisDurumID = kendoGridSecilileriAl("GridSatislarListesi").SatisDurumID;
+                var Aciklama = kendoGridSecilileriAl("GridSatislarListesi").Aciklama;
+                var Bundle = kendoGridSecilileriAl("GridSatislarListesi").Bundle;
+                var IslemNo = kendoGridSecilileriAl("GridSatislarListesi").IslemNo;
+                var Kimlik = kendoGridSecilileriAl("GridSatislarListesi").Kimlik;
+                var MusteriAdiSoyadi = kendoGridSecilileriAl("GridSatislarListesi").MusteriAdiSoyadi;
+                var MusteriTcNo = kendoGridSecilileriAl("GridSatislarListesi").MusteriTcNo;
+                var Tarife = kendoGridSecilileriAl("GridSatislarListesi").Tarife;
+                var MusteriNo = kendoGridSecilileriAl("GridSatislarListesi").MusteriNo;
+
+                $("#UrunlerDrp").data("kendoDropDownList").value(UrunID);
+                $("#PersonellerDrp").data("kendoDropDownList").value(PersonelID);
+                $("#IslemKanllariDrp").data("kendoDropDownList").value(IslemKanaliID);
+                $("#SatisDurumlariDrp").data("kendoDropDownList").value(SatisDurumID);
+                //$("#SatisAdetiNmbr").data("kendoNumericTextBox").value(SatisAdeti);
+                $("#SatisTarihiDatePic").data("kendoDatePicker").value(SatisTarihi);
+                $("#aciklamaText").val(Aciklama);
+                $("#bundleText").val(Bundle);
+                $("#islemNoText").val(IslemNo);
+                $("#kimlikText").val(Kimlik);
+                $("#musteriAdiSoyadiText").val(MusteriAdiSoyadi);
+                $("#musteriTcNoText").val(MusteriTcNo);
+                $("#tarifeText").val(Tarife);
+                $("#musteriNoText").val(MusteriNo);
+
+
+
+            },
+            readPersonellerDrp: function () {
+                return ({ MagazaID: $("#GenelDrpMagazalar").val() });
+            },
+            GridSatislarListesiParams: function () {
+                return ({ MagazaID: $("#GenelDrpMagazalar").val(), HedefAyID: $("#GenelDrpHedefAylar").val() });
+            },
+            Temizle: function () {
+                $("#btnSatisEkle")[0].innerHTML = "Satış Ekle"
+                $("#UrunlerDrp").data("kendoDropDownList").value("");
+                $("#PersonellerDrp").data("kendoDropDownList").value("");
+                $("#SatisDurumlariDrp").data("kendoDropDownList").value("");
+                $("#IslemKanllariDrp").data("kendoDropDownList").value("");
+                //$("#SatisAdetiNmbr").data("kendoNumericTextBox").value("");
+                $("#SatisTarihiDatePic").data("kendoDatePicker").value("");
+                $("#musteriAdiSoyadiText").val("");
+                $("#musteriNoText").val("");
+                $("#musteriTcNoText").val("");
+                $("#islemNoText").val("");
+                $("#bundleText").val("");
+                $("#aciklamaText").val("");
+                $("#tarifeText").val("");
+                $("#kimlikText").val("");
+                $("#GridSatislarListesi").data("kendoGrid").dataSource.read();
+            }
+        }
+</script>
+
+<div style="padding:18px;" id="divSatisEkleBtn">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10">
+            <div class="row">
+                <div class="col-md-5"><label>Satış Tarihi</label></div>
+                <div class="col-md-7">@(Html.Kendo().DatePicker().Name("SatisTarihiDatePic"))</div>
+            </div>
+
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10">
+            <div class="row">
+                <div class="col-md-5"><label>İşlem Kanalı Seçiniz:</label></div>
+                <div class="col-md-7">
+                    @(Html.Kendo().DropDownList()
+                                                                                      .Name("IslemKanllariDrp")
+                                                                                      .OptionLabel("İşlem Kanalı Seçiniz")
+                                                                                      .DataTextField("IslemKanali")
+                                                                                      .DataValueField("IslemKanaliID")
+                                                                                      //.HtmlAttributes(new { style = "max-width: 200px" })
+                                                                                      .Filter("contains")
+                                                                                      .DataSource(dataSource =>
+                                                                                      {
+                                                                                          dataSource.Read(read => read.Action("ReadIslemKanallari", "Genel"));
+                                                                                      }))
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10 ">
+            <div class="row">
+                <div class="col-md-5"><label>İşlem Tipi Seçiniz:</label></div>
+                <div class="col-md-7">
+                    @(Html.Kendo().DropDownList()
+                                                                        .Name("UrunlerDrp")
+                                                                        .OptionLabel("İşlem Tipi Seçiniz")
+                                                                        .DataTextField("UrunAdi")
+                                                                        .DataValueField("UrunID")
+                                                                        //.HtmlAttributes(new { style = "width: 200px" })
+                                                                        .Filter("contains")
+                                                                        .DataSource(dataSource =>
+                                                                        {
+                                                                            dataSource.Read(read => read.Action("ReadUrunler", "Genel"));
+                                                                        }))
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10" style="clear:left;">
+            <div class="row">
+                <div class="col-md-5"><label>Müşteri AdıSoyadı:</label></div>
+                <div class="col-md-7">@(Html.Kendo().TextBox().Name("musteriAdiSoyadiText"))</div>
+            </div>
+
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10">
+            <div class="row">
+                <div class="col-md-5"><label>Müşteri No:</label></div>
+                <div class="col-md-7"> @(Html.Kendo().TextBox().Name("musteriNoText"))</div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10">
+            <div class="row">
+                <div class="col-md-5"><label>Müşteri TcNo:</label></div>
+                <div class="col-md-7">@(Html.Kendo().TextBox().Name("musteriTcNoText"))</div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10">
+            <div class="row">
+                <div class="col-md-5"><label>İşlem No:</label></div>
+                <div class="col-md-7">@(Html.Kendo().TextBox().Name("islemNoText"))</div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10">
+            <div class="row">
+                <div class="col-md-5"><label>Kimlik:</label></div>
+                <div class="col-md-7">@(Html.Kendo().TextBox().Name("kimlikText"))</div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10">
+            <div class="row">
+                <div class="col-md-5"><label>Tarife:</label></div>
+                <div class="col-md-7">@(Html.Kendo().TextBox().Name("tarifeText"))</div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10">
+            <div class="row">
+                <div class="col-md-5"><label>Bundle:</label></div>
+                <div class="col-md-7">@(Html.Kendo().TextBox().Name("bundleText"))</div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10">
+            <div class="row">
+                <div class="col-md-5"><label>Açıklama:</label></div>
+                <div class="col-md-7">@(Html.Kendo().TextBox().Name("aciklamaText"))</div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10">
+            <div class="row">
+                <div class="col-md-5"> <label>Personel Seçiniz:</label></div>
+                <div class="col-md-7">
+                    @(Html.Kendo().DropDownList()
+                                                                                             .Name("PersonellerDrp")
+                                                                                             .OptionLabel("Personel Seçiniz")
+                                                                                             .DataTextField("Adi")
+                                                                                             .DataValueField("PersonelID")
+                                                                                             //.HtmlAttributes(new { style = "width: 200px" })
+                                                                                             .Filter("contains")
+                                                                                             .DataSource(dataSource =>
+                                                                                             {
+                                                                                                 dataSource.Read(read => read.Action("ReadPersoneller", "Genel").Data("satisIslemleri_js.readPersonellerDrp"));
+                                                                                             }))
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-10">
+            <div class="row">
+                <div class="col-md-5">
+                    @*@(Html.Kendo().NumericTextBox().Name("SatisAdetiNmbr"))*@
+                    <label>Satış Durumu Seçiniz:</label>
+                </div>
+                <div class="col-md-7">
+                    @(Html.Kendo().DropDownList()
+                                                                        .Name("SatisDurumlariDrp")
+                                                                        .OptionLabel("Satış Durumu Seçiniz")
+                                                                        .DataTextField("SatisDurumu")
+                                                                        .DataValueField("SatisDurumID")
+                                                                        //.HtmlAttributes(new { style = "width: 200px" })
+
+                                                                        .Filter("contains")
+                                                                        .DataSource(dataSource =>
+                                                                        {
+                                                                            dataSource.Read(read => read.Action("ReadSatisDurumlari", "Genel"));
+                                                                        }))
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="butonlar">
+        <button id="btnSatisEkle" type="button" onclick="satisIslemleri_js.SatisEkle()" class="btn btn-success"> Satış Ekle</button>
+        <button type="button" onclick="satisIslemleri_js.Temizle()" class="btn btn-success"> Temizle</button>
+    </div>
+
+
+
+
+
+
+</div>
+<div style="padding:18px;" id="divSatislarListesi">
+
+    @(Html.Kendo().Grid<proc_SatislarListesi_Result>().Name("GridSatislarListesi")
+                .HtmlAttributes(new { style = "height:100%" })
+            .Columns(col =>
+            {
+                col.Bound(f => f.SatisID).Visible(false);
+                col.Bound(f => f.SatisTarihi).Width("200px").Title("Tarih").Format("{0:dd.MM.yyyy}");
+                col.Bound(f => f.IslemKanali).Width("200px").Title("İşlem Kanalı").Filterable(f => f.Cell(c => c.Operator("contains")));
+                col.Bound(f => f.UrunAdi).Width("200px").Title("İşlem Tipi").Filterable(f => f.Cell(c => c.Operator("contains")));
+                col.Bound(f => f.MusteriAdiSoyadi).Width("200px").Title("Müşteri AdıSoyadı").Filterable(f => f.Cell(c => c.Operator("contains")));
+                col.Bound(f => f.MusteriNo).Width("200px").Title("MüşteriNo").Filterable(f => f.Cell(c => c.Operator("contains")));
+                col.Bound(f => f.MusteriTcNo).Width("200px").Title("TcNo-PasNo").Filterable(f => f.Cell(c => c.Operator("contains")));
+                col.Bound(f => f.IslemNo).Width("200px").Title("İşlemNo").Filterable(f => f.Cell(c => c.Operator("contains")));
+                col.Bound(f => f.Kimlik).Width("200px").Title("Kimlik").Filterable(f => f.Cell(c => c.Operator("contains")));
+                col.Bound(f => f.Tarife).Width("200px").Filterable(f => f.Cell(c => c.Operator("contains")));
+                col.Bound(f => f.Adi).Width("200px").Title("Personel").Filterable(f => f.Cell(c => c.Operator("contains")));
+                col.Bound(f => f.SatisDurumu).Width("200px").Title("Durum").Filterable(f => f.Cell(c => c.Operator("contains")));
+                col.Bound(f => f.Bundle).Width("200px").Filterable(f => f.Cell(c => c.Operator("contains")));
+                col.Bound(f => f.Aciklama).Width("200px").Title("Açıklama").Filterable(f => f.Cell(c => c.Operator("contains")));
+                //col.Command(e => e.Edit()).Title("Güncelle").Width(100);
+            })
+            //.Editable(e => e.Mode(GridEditMode.PopUp).TemplateName("SatisEklePopup").Window(w => w.Title("Satış Güncelle").Modal(true)))
+            .Scrollable()
+             .Filterable(f => f.Mode(GridFilterMode.Row)).ColumnMenu()
+            .Pageable()
+            .Sortable()
+            .AutoBind(false)
+            .Events(e => e.DataBound("satisIslemleri_js.onFilter"))
+            .Events(e => e.Change("satisIslemleri_js.satisListesiChange"))
+            .Selectable()
+             .DataSource(dataSource => dataSource.Ajax().PageSize(50).Model(model =>
+             {
+                 model.Id(p => p.SatisID);
+                 model.Field(p => p.PersonelID);
+                 model.Field(p => p.UrunID);
+                 model.Field(p => p.SatisDurumID);
+                 model.Field(p => p.IslemKanaliID);
+             })
+                .Read(read => read.Action("ReadSatislar", "Satislar").Data("satisIslemleri_js.GridSatislarListesiParams").Type(HttpVerbs.Post))
+             //.Update(update => update.Action("PostSatislar", "Satislar").Type(HttpVerbs.Post))
+
+             )
+    )
+    <div id="divAraToplam"><span style="font-size:16px;">Toplam Satış Adeti: <span id="araToplam"></span></span></div>
+</div>
+
+@*@(Html.Kendo().Window()
+    .Name("SatislarPopup")
+    .Width(800)
+    .Height(400)
+    .Draggable()
+    .Resizable()
+    .Visible(false)
+    .Title("Satış Ekle")
+    .Actions(actions => actions.Pin().Refresh().Maximize().Close())
+    .LoadContentFrom("SatislarPopup", "Satislar")*@

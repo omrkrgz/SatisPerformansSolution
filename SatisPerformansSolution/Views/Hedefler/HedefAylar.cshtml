@@ -1,0 +1,104 @@
+﻿@using SatisPeformans.Entities.Surrogates;
+
+@{
+    ViewBag.Title = "HedefAylar";
+}
+<script>
+    var hedefAyIslemleri_JS =
+        {
+            Ekle: function () {
+                debugger;
+                if (kendoGridSecilileriAl("GridHedefAylarListesi") != null) {
+                    var HedefAyID = kendoGridSecilileriAl("GridHedefAylarListesi").HedefAyID;
+                }
+                var hedefAyAdi = $("#hedefAyAdi").val();
+                var baslangicTarihi = $("#baslangicTarihiDatePic").val();
+                var bitisTarihi = $("#bitisTarihiDatePic").val();
+                var ParametreDizi = { HedefAyID: HedefAyID, HedefAyi: hedefAyAdi, HedefBaslangicTarihi: baslangicTarihi, HedefBitisTarihi: bitisTarihi }
+                $.ajax({
+                    url: '/Hedefler/PostHedefAylar',
+                    data: JSON.stringify(ParametreDizi),
+                    contentType: 'application/json; charset=utf-8',
+                    type: "POST",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success == true) {
+                            debugger;
+                            //$('.k-window-action').find('.k-i-close')[0].click();
+                            $("#GridHedefAylarListesi").data("kendoGrid").dataSource.read();
+                            $("#hedefAyAdi").val("");
+                            $("#baslangicTarihiDatePic").data("kendoDatePicker").value("");
+                            $("#bitisTarihiDatePic").data("kendoDatePicker").value("");
+                            $("#hedefAyEkle")[0].innerHTML = "Hedef Ay Ekle"
+                            @*$("#bitisTarihiDatePic").data("kendoDatePicker").value('@DateTime.Now.ToString("dd.MM.yyyy")');
+                            $("#bitisTarihiDatePic").data("kendoDatePicker").value('@DateTime.Now.ToString("dd.MM.yyyy")');*@
+
+                        }
+                        else {
+                            debugger;
+
+                            alert("Ay eklerken Hata Meydana Geldi.");
+
+                        }
+                    }
+                });
+            },
+            GridHedefAylarListesiChange: function ()
+            {
+                $("#hedefAyEkle")[0].innerHTML = "Hedef Ay Güncelle"
+                var HedefAyi = kendoGridSecilileriAl("GridHedefAylarListesi").HedefAyi;
+                var baslangicTarihi = kendoGridSecilileriAl("GridHedefAylarListesi").HedefBaslangicTarihi;
+                var bitisTarihi = kendoGridSecilileriAl("GridHedefAylarListesi").HedefBitisTarihi;
+                $("#hedefAyAdi").val(HedefAyi);
+                $("#baslangicTarihiDatePic").data("kendoDatePicker").value(baslangicTarihi);
+                $("#bitisTarihiDatePic").data("kendoDatePicker").value(bitisTarihi);
+            },
+            Temizle: function ()
+            {
+                $("#GridHedefAylarListesi").data("kendoGrid").dataSource.read();
+                $("#hedefAyAdi").val("");
+                $("#baslangicTarihiDatePic").data("kendoDatePicker").value("");
+                $("#bitisTarihiDatePic").data("kendoDatePicker").value("");
+                $("#hedefAyEkle")[0].innerHTML = "Hedef Ay Ekle"
+            }
+        }
+</script>
+
+<div style="padding:18px; margin-bottom:-25px;" id="divHedefAyiBtn">
+    <label>Hedef Ay Adı:</label>
+    @(Html.Kendo().TextBox().Name("hedefAyAdi"))
+    <label>Başlangıç Tarihi:</label>
+    @(Html.Kendo().DatePicker().Name("baslangicTarihiDatePic"))
+    <label>Bitiş Tarihi:</label>
+    @(Html.Kendo().DatePicker().Name("bitisTarihiDatePic"))
+    <button type="button" id="hedefAyEkle" onclick="hedefAyIslemleri_JS.Ekle()" class="btn btn-success"> Hedef Ay Ekle</button>
+    <button type="button"  onclick="hedefAyIslemleri_JS.Temizle()" class="btn btn-success"> Temizle</button>
+</div>
+
+<div style="padding:18px;" id="divHedefAylarListesi">
+            @(Html.Kendo().Grid<HedefAylarSurrogate>().Name("GridHedefAylarListesi")
+    .Columns(col =>
+    {
+        col.Bound(f => f.HedefAyID).Visible(false);
+        col.Bound(f => f.HedefAyi).Filterable(f => f.Cell(c => c.Operator("contains")));
+        col.Bound(f => f.HedefBaslangicTarihi).Format("{0:dd.MM.yyyy}");
+        col.Bound(f => f.HedefBitisTarihi).Format("{0:dd.MM.yyyy}");
+
+    })
+
+    .Scrollable()
+    .Filterable(f => f.Mode(GridFilterMode.Row)).ColumnMenu()
+    .Pageable()
+    .Sortable()
+    //.HtmlAttributes(new { style = "height:500px;" })
+    .Resizable(resize => resize.Columns(true))
+   .Events(e=>e.Change("hedefAyIslemleri_JS.GridHedefAylarListesiChange"))
+    .Selectable()
+     .DataSource(dataSource => dataSource.Ajax().PageSize(50).Model(model => { model.Id(p => p.HedefAyID); })
+        .Read(read => read.Action("ReadHedefAylar", "Hedefler").Type(HttpVerbs.Post))
+
+     )
+            )
+        </div>
+ 
+

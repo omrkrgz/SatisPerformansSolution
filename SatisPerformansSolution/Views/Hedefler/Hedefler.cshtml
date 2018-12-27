@@ -1,0 +1,163 @@
+﻿@using SatisPeformans.Entities.Surrogates;
+
+@{
+    ViewBag.Title = "Hedefler";
+}
+<style>
+    #GridHedeflerListesi > div.k-grid-content {
+        height: 415px !important;
+    }
+</style>
+<script>
+    var hedefeklemeIslemleri_js =
+        {
+            hedefTanımla: function (e) {
+                debugger;
+                if (kendoGridSecilileriAl("GridHedeflerListesi") != null) {
+                    var HedefID = kendoGridSecilileriAl("GridHedeflerListesi").HedefID;
+                }
+                var urunID = $("#HedeflerUrunlerDrp").val();
+                var personelID = $("#HedeflerPersonellerDrp").val();
+                var hedefAdet = $("#HedeflerSatisAdetiNmbr").val();
+                var hedefAyID = $("#HedeflerHedefAylarDrp").val();
+                var magazaID = $("#GenelDrpMagazalar").val();
+
+                var ParametreDizi = { MagazaID:magazaID,HedefID: HedefID,UrunID: urunID, PersonelID: personelID, HedefAdet: hedefAdet, HedefAyID: hedefAyID };
+                $.ajax({
+                    url: '/Hedefler/PostHedefler',
+                    data: JSON.stringify(ParametreDizi),
+                    contentType: 'application/json; charset=utf-8',
+                    type: "POST",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success == true) {
+
+                            hedefeklemeIslemleri_js.Temizle();
+
+                        }
+                        else {
+
+                            alert("Kaydetme işlemi hatalı");
+                        }
+                    }
+                });
+            },
+
+            readPersonellerDrp: function ()
+            {
+                return ({ MagazaID: $("#GenelDrpMagazalar").val() });
+            },
+            ReadParams: function ()
+            {
+                return ({ MagazaID: $("#GenelDrpMagazalar").val() });
+            },
+            HedeflerUrunlerDrpDataBound: function ()
+            {
+                $("#HedeflerPersonellerDrp").data("kendoDropDownList").dataSource.read()
+            },
+            GridHedeflerListesiChange: function ()
+            {
+                debugger;
+                $("#hedefEkle")[0].innerHTML = "Hedef Güncelle"
+                var PersonelID = kendoGridSecilileriAl("GridHedeflerListesi").PersonelID;
+                var UrunID = kendoGridSecilileriAl("GridHedeflerListesi").UrunID;
+                var HedefAdet = kendoGridSecilileriAl("GridHedeflerListesi").HedefAdet;
+                var HedefAyID = kendoGridSecilileriAl("GridHedeflerListesi").HedefAyID;
+                $("#HedeflerPersonellerDrp").data("kendoDropDownList").value(PersonelID);
+                $("#HedeflerUrunlerDrp").data("kendoDropDownList").value(UrunID);
+                $("#HedeflerHedefAylarDrp").data("kendoDropDownList").value(HedefAyID);
+                $("#HedeflerSatisAdetiNmbr").data("kendoNumericTextBox").value(HedefAdet);
+               
+                
+            },
+            Temizle: function ()
+            {
+                $("#GridHedeflerListesi").data("kendoGrid").dataSource.read();
+                $("#HedeflerPersonellerDrp").data("kendoDropDownList").value("");
+                $("#HedeflerUrunlerDrp").data("kendoDropDownList").value("");
+                $("#HedeflerHedefAylarDrp").data("kendoDropDownList").value("");
+                $("#HedeflerSatisAdetiNmbr").data("kendoNumericTextBox").value("");
+                $("#hedefEkle")[0].innerHTML = "Hedef Tanımla"
+            }
+        }
+</script>
+
+<div style="padding:18px; margin-bottom:-25px;" id="divHedefEkleBtn">
+    @(Html.Kendo().DropDownList()
+                                .Name("HedeflerPersonellerDrp")
+                                .OptionLabel("Personel Seçiniz")
+                                .DataTextField("Adi")
+                                .DataValueField("PersonelID")
+                                .HtmlAttributes(new { style = "width: 200px" })
+                                .Filter("contains")
+                                .DataSource(dataSource =>
+                                {
+                                    dataSource.Read(read => read.Action("ReadPersoneller", "Genel").Data("hedefeklemeIslemleri_js.readPersonellerDrp"));
+                                }))
+
+    @(Html.Kendo().DropDownList()
+                                .Name("HedeflerUrunlerDrp")
+                                .OptionLabel("Ürün Seçiniz")
+                                .DataTextField("UrunAdi")
+                                .DataValueField("UrunID")
+                                .HtmlAttributes(new { style = "width: 200px" })
+                                .Filter("contains")
+                                .Events(e=>e.DataBound("hedefeklemeIslemleri_js.HedeflerUrunlerDrpDataBound"))
+                                .DataSource(dataSource =>
+                                {
+                                    dataSource.Read(read => read.Action("ReadUrunler", "Genel"));
+                                }))
+
+  
+    @(Html.Kendo().NumericTextBox().Name("HedeflerSatisAdetiNmbr"))
+    @(Html.Kendo().DropDownList()
+                                .Name("HedeflerHedefAylarDrp")
+                                .OptionLabel("Hedef Ayı Seçiniz")
+                                .DataTextField("HedefAyi")
+                                .DataValueField("HedefAyID")
+                                .HtmlAttributes(new { style = "width: 200px" })
+                                .Filter("contains")
+                                
+                                .DataSource(dataSource =>
+                                {
+                                    dataSource.Read(read => read.Action("ReadHedefAylar", "Genel"));
+                                }))
+   
+    <button type="button" id="hedefEkle" onclick="hedefeklemeIslemleri_js.hedefTanımla()" class="btn btn-success"> Hedef Tanımla</button>
+    <button type="button"  onclick="hedefeklemeIslemleri_js.Temizle()" class="btn btn-success"> Temizle</button>
+</div>
+<div style="padding:18px;" id="divHedeflerListesi">
+
+    @(Html.Kendo().Grid<HedeflerSurrogate>().Name("GridHedeflerListesi")
+    .Columns(col =>
+    {
+        col.Bound(f => f.HedefID).Visible(false);
+        col.Bound(f => f.PersonelAdi);
+        col.Bound(f => f.UrunAdi).Filterable(f => f.Cell(c => c.Operator("contains")));
+        col.Bound(f => f.HedefAdet);
+        col.Bound(f => f.HedefAyi);
+
+
+    })
+
+    .Scrollable()
+     .Filterable(f => f.Mode(GridFilterMode.Row)).ColumnMenu()
+    .Pageable()
+    .Sortable()
+    .AutoBind(false)
+    .Events(e=>e.Change("hedefeklemeIslemleri_js.GridHedeflerListesiChange"))
+    .Selectable()
+     .DataSource(dataSource => dataSource.Ajax().PageSize(50).Model(model =>
+     {
+         model.Id(p => p.HedefAyID);
+         model.Field(p => p.PersonelID);
+         model.Field(p => p.UrunID);
+         model.Field(p => p.HedefAyID);
+
+     })
+        .Read(read => read.Action("ReadHedefler", "Hedefler").Type(HttpVerbs.Post).Data("hedefeklemeIslemleri_js.ReadParams"))
+
+     )
+    )
+</div>
+

@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SatisPerformansDBModelStoreContainer" CdmEntityContainer="SatisPerformansDBEntities">
+    <EntitySetMapping Name="Personeller">
+      <EntityTypeMapping TypeName="SatisPerformansDBModel.Personeller">
+        <MappingFragment StoreEntitySet="Personeller">
+          <ScalarProperty Name="MagazaID" ColumnName="MagazaID" />
+          <ScalarProperty Name="PersonelID" ColumnName="PersonelID" />
+          <ScalarProperty Name="Adi" ColumnName="Adi" />
+          <ScalarProperty Name="Soyadi" ColumnName="Soyadi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="SatisPerformansDBModel.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="SatisPerformansDBModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="SatisPerformansDBModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="SatisPerformansDBModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="SatisPerformansDBModel.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SatisPerformansDBModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="SatisPerformansDBModel.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SatisPerformansDBModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="SatisPerformansDBModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="SatisPerformansDBModel.Store.sp_upgraddiagrams" />
+    <EntitySetMapping Name="HedefAylari">
+      <EntityTypeMapping TypeName="SatisPerformansDBModel.HedefAylari">
+        <MappingFragment StoreEntitySet="HedefAylari">
+          <ScalarProperty Name="HedefTarihiBitis" ColumnName="HedefTarihiBitis" />
+          <ScalarProperty Name="HedefTarihiBaslangic" ColumnName="HedefTarihiBaslangic" />
+          <ScalarProperty Name="HedefAyi" ColumnName="HedefAyi" />
+          <ScalarProperty Name="HedefAyID" ColumnName="HedefAyID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SatisDurumlari">
+      <EntityTypeMapping TypeName="SatisPerformansDBModel.SatisDurumlari">
+        <MappingFragment StoreEntitySet="SatisDurumlari">
+          <ScalarProperty Name="SatisDurumu" ColumnName="SatisDurumu" />
+          <ScalarProperty Name="SatisDurumID" ColumnName="SatisDurumID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Magazalar">
+      <EntityTypeMapping TypeName="SatisPerformansDBModel.Magazalar">
+        <MappingFragment StoreEntitySet="Magazalar">
+          <ScalarProperty Name="MagazaAdi" ColumnName="MagazaAdi" />
+          <ScalarProperty Name="MagazaID" ColumnName="MagazaID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Urunler">
+      <EntityTypeMapping TypeName="SatisPerformansDBModel.Urunler">
+        <MappingFragment StoreEntitySet="Urunler">
+          <ScalarProperty Name="UrunAdi" ColumnName="UrunAdi" />
+          <ScalarProperty Name="UrunID" ColumnName="UrunID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Satislar">
+      <EntityTypeMapping TypeName="SatisPerformansDBModel.Satislar">
+        <MappingFragment StoreEntitySet="Satislar">
+          <ScalarProperty Name="SatisTarihi" ColumnName="SatisTarihi" />
+          <ScalarProperty Name="SatisID" ColumnName="SatisID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="IslemKanallari">
+      <EntityTypeMapping TypeName="SatisPerformansDBModel.IslemKanallari">
+        <MappingFragment StoreEntitySet="IslemKanallari">
+          <ScalarProperty Name="IslemKanali" ColumnName="IslemKanali" />
+          <ScalarProperty Name="IslemKanaliID" ColumnName="IslemKanaliID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="proc_SatisRaporu" FunctionName="SatisPerformansDBModel.Store.proc_SatisRaporu">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SatisPerformansDBModel.proc_SatisRaporu_Result">
+          <ScalarProperty Name="PersonelID" ColumnName="PersonelID" />
+          <ScalarProperty Name="HedefAdet" ColumnName="HedefAdet" />
+          <ScalarProperty Name="UrunAdi" ColumnName="UrunAdi" />
+          <ScalarProperty Name="Adi" ColumnName="Adi" />
+          <ScalarProperty Name="Soyadi" ColumnName="Soyadi" />
+          <ScalarProperty Name="ToplamSatis" ColumnName="ToplamSatis" />
+          <ScalarProperty Name="KalanHedef" ColumnName="KalanHedef" />
+          <ScalarProperty Name="HedefAyi" ColumnName="HedefAyi" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="SatisDetaylari">
+      <EntityTypeMapping TypeName="SatisPerformansDBModel.SatisDetaylari">
+        <MappingFragment StoreEntitySet="SatisDetaylari">
+          <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
+          <ScalarProperty Name="Bundle" ColumnName="Bundle" />
+          <ScalarProperty Name="Kimlik" ColumnName="Kimlik" />
+          <ScalarProperty Name="Tarife" ColumnName="Tarife" />
+          <ScalarProperty Name="IslemNo" ColumnName="IslemNo" />
+          <ScalarProperty Name="MusteriTcNo" ColumnName="MusteriTcNo" />
+          <ScalarProperty Name="MusteriNo" ColumnName="MusteriNo" />
+          <ScalarProperty Name="MusteriAdiSoyadi" ColumnName="MusteriAdiSoyadi" />
+          <ScalarProperty Name="IslemKanaliID" ColumnName="IslemKanaliID" />
+          <ScalarProperty Name="HedefAyID" ColumnName="HedefAyID" />
+          <ScalarProperty Name="MagazaID" ColumnName="MagazaID" />
+          <ScalarProperty Name="SatisDurumID" ColumnName="SatisDurumID" />
+          <ScalarProperty Name="SatisAdeti" ColumnName="SatisAdeti" />
+          <ScalarProperty Name="UrunID" ColumnName="UrunID" />
+          <ScalarProperty Name="PersonelID" ColumnName="PersonelID" />
+          <ScalarProperty Name="SatisID" ColumnName="SatisID" />
+          <ScalarProperty Name="SatisDetayID" ColumnName="SatisDetayID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Hedefler">
+      <EntityTypeMapping TypeName="SatisPerformansDBModel.Hedefler">
+        <MappingFragment StoreEntitySet="Hedefler">
+          <ScalarProperty Name="MagazaID" ColumnName="MagazaID" />
+          <ScalarProperty Name="HedefAyID" ColumnName="HedefAyID" />
+          <ScalarProperty Name="UrunID" ColumnName="UrunID" />
+          <ScalarProperty Name="PersonelID" ColumnName="PersonelID" />
+          <ScalarProperty Name="HedefAdet" ColumnName="HedefAdet" />
+          <ScalarProperty Name="HedefID" ColumnName="HedefID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="proc_SatislarListesi" FunctionName="SatisPerformansDBModel.Store.proc_SatislarListesi">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SatisPerformansDBModel.proc_SatislarListesi_Result">
+          <ScalarProperty Name="SatisID" ColumnName="SatisID" />
+          <ScalarProperty Name="SatisDetayID" ColumnName="SatisDetayID" />
+          <ScalarProperty Name="Adi" ColumnName="Adi" />
+          <ScalarProperty Name="PersonelID" ColumnName="PersonelID" />
+          <ScalarProperty Name="UrunAdi" ColumnName="UrunAdi" />
+          <ScalarProperty Name="UrunID" ColumnName="UrunID" />
+          <ScalarProperty Name="SatisTarihi" ColumnName="SatisTarihi" />
+          <ScalarProperty Name="SatisDurumu" ColumnName="SatisDurumu" />
+          <ScalarProperty Name="SatisDurumID" ColumnName="SatisDurumID" />
+          <ScalarProperty Name="IslemKanali" ColumnName="IslemKanali" />
+          <ScalarProperty Name="IslemKanaliID" ColumnName="IslemKanaliID" />
+          <ScalarProperty Name="MusteriAdiSoyadi" ColumnName="MusteriAdiSoyadi" />
+          <ScalarProperty Name="MusteriNo" ColumnName="MusteriNo" />
+          <ScalarProperty Name="MusteriTcNo" ColumnName="MusteriTcNo" />
+          <ScalarProperty Name="IslemNo" ColumnName="IslemNo" />
+          <ScalarProperty Name="Kimlik" ColumnName="Kimlik" />
+          <ScalarProperty Name="Tarife" ColumnName="Tarife" />
+          <ScalarProperty Name="Bundle" ColumnName="Bundle" />
+          <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

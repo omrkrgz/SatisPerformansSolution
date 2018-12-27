@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SatisPerformansDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="HedefAylari">
+    <Key>
+      <PropertyRef Name="HedefAyID" />
+    </Key>
+    <Property Name="HedefAyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HedefAyi" Type="nvarchar" MaxLength="50" />
+    <Property Name="HedefTarihiBaslangic" Type="date" />
+    <Property Name="HedefTarihiBitis" Type="date" />
+  </EntityType>
+  <EntityType Name="Hedefler">
+    <Key>
+      <PropertyRef Name="HedefID" />
+    </Key>
+    <Property Name="HedefID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HedefAdet" Type="int" />
+    <Property Name="PersonelID" Type="int" />
+    <Property Name="UrunID" Type="int" />
+    <Property Name="HedefAyID" Type="int" />
+    <Property Name="MagazaID" Type="int" />
+  </EntityType>
+  <EntityType Name="IslemKanallari">
+    <Key>
+      <PropertyRef Name="IslemKanaliID" />
+    </Key>
+    <Property Name="IslemKanaliID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IslemKanali" Type="nvarchar" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="Magazalar">
+    <Key>
+      <PropertyRef Name="MagazaID" />
+    </Key>
+    <Property Name="MagazaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MagazaAdi" Type="nvarchar" MaxLength="250" />
+  </EntityType>
+  <EntityType Name="Personeller">
+    <Key>
+      <PropertyRef Name="PersonelID" />
+    </Key>
+    <Property Name="PersonelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Adi" Type="nvarchar" MaxLength="80" />
+    <Property Name="Soyadi" Type="nvarchar" MaxLength="80" />
+    <Property Name="MagazaID" Type="int" />
+  </EntityType>
+  <EntityType Name="SatisDetaylari">
+    <Key>
+      <PropertyRef Name="SatisDetayID" />
+    </Key>
+    <Property Name="SatisDetayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SatisID" Type="int" />
+    <Property Name="PersonelID" Type="int" />
+    <Property Name="UrunID" Type="int" />
+    <Property Name="SatisAdeti" Type="int" />
+    <Property Name="SatisDurumID" Type="int" />
+    <Property Name="MagazaID" Type="int" />
+    <Property Name="HedefAyID" Type="int" />
+    <Property Name="IslemKanaliID" Type="int" />
+    <Property Name="MusteriAdiSoyadi" Type="nvarchar" MaxLength="300" />
+    <Property Name="MusteriNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="MusteriTcNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="IslemNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="Tarife" Type="nvarchar" MaxLength="250" />
+    <Property Name="Kimlik" Type="nvarchar" MaxLength="250" />
+    <Property Name="Bundle" Type="nvarchar" MaxLength="250" />
+    <Property Name="Aciklama" Type="nvarchar" MaxLength="800" />
+  </EntityType>
+  <EntityType Name="SatisDurumlari">
+    <Key>
+      <PropertyRef Name="SatisDurumID" />
+    </Key>
+    <Property Name="SatisDurumID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SatisDurumu" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Satislar">
+    <Key>
+      <PropertyRef Name="SatisID" />
+    </Key>
+    <Property Name="SatisID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SatisTarihi" Type="date" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Urunler">
+    <Key>
+      <PropertyRef Name="UrunID" />
+    </Key>
+    <Property Name="UrunID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UrunAdi" Type="nvarchar(max)" />
+  </EntityType>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="proc_SatislarListesi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="MagazaID" Type="int" Mode="In" />
+    <Parameter Name="HedefAyID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="proc_SatisRaporu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="HedefAyID" Type="int" Mode="In" />
+    <Parameter Name="MagazaID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="SatisPerformansDBModelStoreContainer">
+    <EntitySet Name="HedefAylari" EntityType="Self.HedefAylari" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Hedefler" EntityType="Self.Hedefler" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="IslemKanallari" EntityType="Self.IslemKanallari" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Magazalar" EntityType="Self.Magazalar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Personeller" EntityType="Self.Personeller" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SatisDetaylari" EntityType="Self.SatisDetaylari" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SatisDurumlari" EntityType="Self.SatisDurumlari" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Satislar" EntityType="Self.Satislar" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Urunler" EntityType="Self.Urunler" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
